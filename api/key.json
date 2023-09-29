@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "ecg-diagnosis-system",
+  "private_key_id": "6e6bf2092b6f2c902541a365ca5c93b645ed5f95",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCxTqaQ3wdg8gq8\nuBubWV6qx64jawZMVUZXqKJJ2z/eTaWoDhepG7k5PCXLgUlegGbH3/C2FIq/qDWF\nfnfz3P+XDSqztf0GXx8Bgt7BPVK6SuRVqkOwtjRwaU0k4IxJN9dTiD3RzAQUrmOV\nzpf3baVg3V/TXv/RcTGo8XubcORHkZU5Cn3M/4bnbhsKdAzr8Z4ZSef4DV8Bmd+N\n4HhJkZq7O9AvM0+JC/zE8YEa+kgHhFiobLllCMa0Ru8PzjIEHAvMSmm+LVMNe6Hf\nYlikueP+sexzGGm1Cqml/DJ4lIaB8R7CLKHX4RWEwxUwgoFGx3hWB1uQ/WE4sBZt\n8RrTka15AgMBAAECggEACFN2q+flO06yZWFJ3pYoRWHCEiS084Gvn28qS8iRa7l+\ntXEP+F92Z7Mk3TURgnAKI4mnDo3RZCWcecvSCzAOCoRSRIUfwBxYYuRH3JAqIdhh\nd4paymIL/Vlch4ZJ4ChQoroLmR349RWpVIASj8pk0TMkDFNyNN4ZZGMOmGKJPbkK\n3IYE6jLhaYZAgMNDsWOgjY/x1d8BsGnUEUepzp2XDh5dsxF/saOoSJ3680vk7SOG\nIQ0zagxE8B8L4PW39X6pDx68YlzdXzuVsIIKPpNYFB0/zWFk0djao0/0eO9MiId7\nVZMcOO94PU6jx+uiLDZrtUHOWRwo4mQyJMm4NUUCBwKBgQDg2NUk/a5rcxP5x49o\naRspqIr9LG7AXQ2Bf0yz4x0mCB/6ekLbrlbFq4sxQDra/mzA303g80QUfoabkJ0+\nhYj9SGnQfmImRdDl8xRIG8R6FdIvpiNxAKd/dGCMakEsyVq92ZQQoSZsIBfixtPd\nmEW+CgObbdompsdZvHBvkD8swwKBgQDJ351/uNUcldyaNc+ZxHw0X2bqpPO2W2Lc\nJ83yi1sSBoybO85oh554gDw3CuIDGPFjlMUiSp1khlu28Xp+L8n0NJ6iDvw78/da\ndv7vawFBMcIBiq8pw23lmCqpGfLmm635Aa5A7+GzxKxv9tptn+Zt1e7ncukqosn0\nuCsyhY+JEwKBgQCR4DvQ5wD9V0jzeeRxshdcXKvn+6bTCMwVYxjJcKTdotHUePPd\ngOttDZGd33UP1ZeLPpVRR6K4xSnhzd4mzQ4Gfa+hBA37lLomJiHXcqRzLKsUHO7L\nhsgk6cUl9F3ah7xmhb4JV/QMnHnCuIqGLx+4XtjeQ1QQVY3qi1ZLG0PRbwKBgBCC\nqW74vvVHjHNQU1pQJ5hg9Rnbw9L2Rm+bEcz0eM5Qms9XZNpHvT49vq8BxNpb/+IV\nGMplL9o44udjeJE5d1rxsseuUhLVMTXE5bTPG5spZqSZoxnXUfWlLFgIN0WFFgV3\njbjh5aO+QhwmJFcy7LWu+YsUat2B0uKg7WeEZOjhAoGBAKc4DkAJfm5rYwbTQTAb\nuijPrARfAAKUGVWi7Ldu0jIwOnKoCCcCrzxRYb4jq1M0bXzL3wibA6ZOuZyPUMKb\nZCdJAdGJm3lusLtf249pumSG8AVVLNdJyxmzQTb66scTWIlcjgjKYRQIxM6kbhdH\nW7BaZkCYQsBMfWI4l40yl8oI\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-5w6xd@ecg-diagnosis-system.iam.gserviceaccount.com",
+  "client_id": "101237157156486926893",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-5w6xd%40ecg-diagnosis-system.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
