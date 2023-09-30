@@ -1,5 +1,5 @@
 import uuid
-from flask import Blueprint,request,jsonify,Flask
+from flask import Blueprint,request,jsonify,Flask,Response
 from firebase_admin import firestore
 from keras.models import load_model
 from keras.preprocessing import image
@@ -194,6 +194,27 @@ def get_submitOutput():
     return jsonify({
         'prediction' : p      
 })
+ 
+@modelapi.route("imagesave", methods=["GET"])   
+def upload_image():
+    # Read the image file using OpenCV
+    image = cv2.imread("C:/Users/TempO/OneDrive/Desktop/python_firebase/segment_51-139.png")
+
+    if image is not None:
+        # Convert the image to bytes
+        _, image_bytes = cv2.imencode('.jpg', image)
+
+        # Set the appropriate content type in the response headers
+        response = Response(image_bytes.tobytes(), content_type='image/jpeg')
+
+        # Optionally, you can set other response headers, such as 'Content-Disposition' to suggest a filename
+        # response.headers['Content-Disposition'] = 'attachment; filename=image.jpg'
+
+        return response
+    else:
+        return 'Failed to read the image file'
+
+    
     
 
 
