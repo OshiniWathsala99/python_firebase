@@ -49,6 +49,19 @@ def createrecord():
         return jsonify({"success" : True}),200
     except Exception as e:
         return f"An Error Occurs : {e}"
+    
+    
+@modelapi.route('/previous',methods=['GET'])
+def retriverecords():
+    column_name = request.args.get('name')
+
+    # Replace 'your_collection' with the name of your Firestore collection
+    # This query filters documents where 'column_name' equals a specific value
+    data = db.collection('predictions').where('user', '==', column_name).get()
+    
+    data_dict = {doc.id: doc.to_dict() for doc in data}
+    return jsonify(data_dict)
+    
 
 @modelapi.route("/upload", methods=["POST"])
 def get_submitOutput():
@@ -61,5 +74,5 @@ def get_submitOutput():
         p=predict_image(img_path, model, transform)
         
     return jsonify({
-        'prediction' : p
+        'prediction' : p      
 })
