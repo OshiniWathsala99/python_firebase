@@ -10,6 +10,10 @@ from api.model1 import ConvNet_1
 from PIL import Image
 from torchvision import datasets
 from torch.utils.data import DataLoader
+import cv2
+import numpy as np
+from scipy.signal import find_peaks
+import os
 
 db=firestore.client()
 user_Ref=db.collection('predictions')
@@ -63,7 +67,53 @@ def retriverecords():
     return jsonify(data_dict)
     
 
-@modelapi.route("/upload", methods=["POST"])
+# @modelapi.route("/upload", methods=["POST"])
+# def get_submitOutput():
+#     if request.method=="POST":
+#         img=request.files['my_image']
+        
+#         img_path = "C:/Users/TempO/OneDrive/Desktop/flask_api/api_fl/static" + img.filename
+#         img.save(img_path)
+        
+#         p=predict_image(img_path, model, transform)
+        
+#     return jsonify({
+#         'prediction' : p      
+# })
+    
+# @modelapi.route("/uploadoriginal", methods=["POST"])
+# def get_submitOutput():
+#     if request.method=="POST":
+#         img=request.files['my_image']
+        
+#         img_path = "C:/Users/TempO/OneDrive/Desktop/flask_api/api_fl/static" + img.filename
+#         img.save(img_path)
+        
+#         original_image = cv2.imread(img_path)
+        
+#         gray_image = cv2.cvtColor(original_image, cv2.COLOR_BGR2GRAY)
+        
+#         _, binary_image = cv2.threshold(gray_image, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+        
+#         edges = cv2.Canny(binary_image, 30, 70)
+        
+#         roi_x = 40  # X-coordinate of the top-left corner of ROI
+#         roi_y = 70  # Y-coordinate of the top-left corner of ROI
+#         roi_width = 250  # Width of ROI
+#         roi_height = 90 # Height of ROI
+#         roi = binary_image[roi_y:roi_y + roi_height, roi_x:roi_x + roi_width]
+        
+#         pathof="C:/Users/TempO/OneDrive/Desktop/flask_api/api_fl/static/roi1.png"
+#         cv2.imwrite(pathof, roi)
+        
+        
+#         p=predict_image(pathof, model, transform)
+        
+#     return jsonify({
+#         'prediction' : p      
+# })
+    
+@modelapi.route("/uploadoriginalcompatible", methods=["POST"])
 def get_submitOutput():
     if request.method=="POST":
         img=request.files['my_image']
@@ -71,8 +121,79 @@ def get_submitOutput():
         img_path = "C:/Users/TempO/OneDrive/Desktop/flask_api/api_fl/static" + img.filename
         img.save(img_path)
         
-        p=predict_image(img_path, model, transform)
+        original_image = cv2.imread(img_path)
+        
+        gray_image = cv2.cvtColor(original_image, cv2.COLOR_BGR2GRAY)
+        
+        _, binary_image = cv2.threshold(gray_image, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+        
+        edges = cv2.Canny(binary_image, 30, 70)
+        
+        roi_x = 40  # X-coordinate of the top-left corner of ROI
+        roi_y = 70  # Y-coordinate of the top-left corner of ROI
+        roi_width = 250  # Width of ROI
+        roi_height = 90 # Height of ROI
+        roi = binary_image[roi_y:roi_y + roi_height, roi_x:roi_x + roi_width]
+        
+        pathof="C:/Users/TempO/OneDrive/Desktop/flask_api/api_fl/static/roi1.png"
+        cv2.imwrite(pathof, roi)
+        
+        # Load the ROI image
+        roi_image = cv2.imread(pathof, cv2.IMREAD_GRAYSCALE)
+
+        # Find the high peaks in the image
+        peaks, _ = find_peaks(roi_image.flatten(), height=100)  # You can adjust the height parameter as needed
+
+        # Define a margin for cropping around the peaks
+        margin = 10
+
+        # Initialize variables to keep track of the cropping coordinates
+        prev_peak = 0
+
+        #peaks croped images
+        i=0
+        
+        segfinal =""
+        filenamefinal=""
+
+        # Iterate through the detected peaks
+        for peak in peaks:
+            # Calculate the cropping coordinates based on the peak location and margin
+            x1 = max(0, prev_peak - margin)
+            x2 = min(roi_image.shape[1], peak + margin)
+    
+            # Crop the segment
+            segment = roi_image[:, x1:x2]
+
+            # Save the segment with a unique filename
+            segment_filename = f'segment_{prev_peak}-{peak}.png'
+            if segment_filename != '' and segment.size != 0:
+                i=i+1
+                if(i==2):
+                    cv2.imwrite(segment_filename, segment)
+                    save_path = "C:/Users/TempO/OneDrive/Desktop/flask_api/api_fl/static/"
+                    cv2.imwrite(os.path.join(save_path, segment_filename), segment)  # Save to the specific path
+                    segfinal =segment
+                    filenamefinal=segment_filename
+    
+            # Update the previous peak
+                prev_peak = peak
+
+            # Crop the last segment if needed
+                if prev_peak < roi_image.shape[1]:
+                    x1 = max(0, prev_peak - margin)
+                    x2 = roi_image.shape[1]
+                    last_segment = roi_image[:, x1:x2]
+                    last_segment_filename = f'last_segment_{prev_peak}-{roi_image.shape[1]}.png'
+                    if(i==3):
+                        cv2.imwrite(last_segment_filename, last_segment)
+
+        newpath = "C:/Users/TempO/OneDrive/Desktop/flask_api/api_fl/static/" + filenamefinal
+        p=predict_image(newpath, model, transform)
         
     return jsonify({
         'prediction' : p      
 })
+    
+
+
