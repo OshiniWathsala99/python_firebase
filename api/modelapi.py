@@ -189,12 +189,8 @@ def get_submitOutput():
                     if(i==3):
                         cv2.imwrite(last_segment_filename, last_segment)
 
-        outname ="out.jpg"
         newpath = "C:/Users/TempO/OneDrive/Desktop/flask_api/api_fl/static/" + filenamefinal
-        outpath= "C:/Users/TempO/OneDrive/Desktop/flask_api/api_fl/static/" + outname
-        png_image = Image.open(newpath)
-        png_image.convert('RGB').save(outpath, 'JPEG')
-        p=predict_image(outpath, model, transform)
+        p=predict_image(newpath, model, transform)
         
     return jsonify({
         'prediction' : p      
