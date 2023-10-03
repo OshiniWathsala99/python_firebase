@@ -67,6 +67,51 @@ def retriverecords():
     data_dict = {doc.id: doc.to_dict() for doc in data}
     return jsonify(data_dict)
     
+    
+@modelapi.route('/toapprove',methods=['GET'])
+def retriveforverifyrecords():
+   
+    # Replace 'your_collection' with the name of your Firestore collection
+    # This query filters documents where 'column_name' equals a specific value
+    data = db.collection('predictions').where('DoctorVeri', '==', 'To Be Confirm').get()
+    
+    data_dict = {doc.id: doc.to_dict() for doc in data}
+    return jsonify(data_dict)
+    
+    
+@modelapi.route('/approvedlist',methods=['GET'])
+def verifiedrecords():
+   
+    # Replace 'your_collection' with the name of your Firestore collection
+    # This query filters documents where 'column_name' equals a specific value
+    data = db.collection('predictions').where('DoctorVeri', '!=', 'To Be Confirm').get()
+    
+    data_dict = {doc.id: doc.to_dict() for doc in data}
+    return jsonify(data_dict)
+
+@modelapi.route('/update_doctorveri', methods=['POST'])
+def update_doctor_veri():
+    data = request.json  # Get user input as JSON
+    print("Received Data:", data)
+
+    if 'user' in data and 'Date' in data and 'DoctorVeri' in data:
+        user = data['user']
+        date = data['Date']
+        doctor_veri = data['DoctorVeri']
+
+        # Query Firestore for the specific user and date
+        query = db.collection('predictions').where('user', '==', user).where('Date', '==', date)
+        docs = query.stream()
+
+        for doc in docs:
+            doc_ref = db.collection('predictions').document(doc.id)
+            doc_ref.update({'DoctorVeri': doctor_veri})
+            #print("Received Data:", doc_ref)
+
+        return jsonify({"message": "DoctorVeri updated successfully"})
+    else:
+        return jsonify({"error": "Invalid input data"}), 400
+  
 
 # @modelapi.route("/upload", methods=["POST"])
 # def get_submitOutput():
