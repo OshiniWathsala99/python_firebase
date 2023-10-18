@@ -111,6 +111,23 @@ def update_doctor_veri():
         return jsonify({"message": "DoctorVeri updated successfully"})
     else:
         return jsonify({"error": "Invalid input data"}), 400
+    
+    
+@modelapi.route('/get_data/<string:id>', methods=['GET'])   
+def get_data(id):
+    try:
+        # Retrieve data based on the ID from Firebase
+        doc_ref = db.collection('predictions').document(id)
+        doc = doc_ref.get()
+
+        if doc.exists:
+            # Convert the Firestore document to a dictionary
+            data = doc.to_dict()
+            return jsonify(data), 200
+        else:
+            return "Data not found", 404
+    except Exception as e:
+        return str(e), 500
   
 
 # @modelapi.route("/upload", methods=["POST"])
