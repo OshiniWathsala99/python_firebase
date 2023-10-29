@@ -1,6 +1,6 @@
 from flask import Flask
 from firebase_admin import credentials,initialize_app,storage
-from flask_cors import CORS  # Import the CORS extension
+from flask_cors import CORS  
 import logging
 
 
@@ -23,7 +23,7 @@ def create_app():
     app.register_blueprint(modelapi,url_prefix='/model')
     app.register_blueprint(crossvalidationapi,url_prefix='/crosscheck')
     
-    app.logger.setLevel(logging.INFO)  # Set the desired log level
+    app.logger.setLevel(logging.INFO)  
     app.logger.addHandler(logging.StreamHandler())
     return app
     

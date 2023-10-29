@@ -8,35 +8,11 @@ db=firestore.client()
 
 crossvalidationapi=Blueprint('crossvalidationapi',__name__)
 
-# @crossvalidationapi.route('/retrieve/<username>/<disease>', methods=['GET'])
-# def retrieve_image(username, disease):
-#     # Generate the document ID using the username
-#     document_id = username.replace(" ", "")
-#     image_doc = db.collection('validation').document(document_id).get()
-
-#     if not image_doc.exists:
-#         return jsonify({'error': 'Image not found for username: ' + username}), 404
-
-#     image_url = image_doc.to_dict().get(f'{disease}Url')
-    
-#     if not image_url:
-#         return jsonify({'error': f'{disease} URL not found for username: ' + username}), 404
-    
-#     image_path = os.path.join(current_app.config['UPLOAD_FOLDER'], image_url)
-
-#     if not os.path.exists(image_path):
-#         return jsonify({'error': f'{disease} image file not found for username: ' + username}), 404
-    
-#     return send_file(image_path)
-
-
-######
-
 def upload_image_to_firebase(image, folder_name):
     try:
         bucket = storage.bucket()
         blob = bucket.blob(folder_name + '/' + image.filename)
-        blob.upload_from_file(image)  # Use upload_from_file to upload the image
+        blob.upload_from_file(image) 
         return blob.public_url
     except Exception as e:
         return str(e)

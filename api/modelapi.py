@@ -60,8 +60,6 @@ def createrecord():
 def retriverecords():
     column_name = request.args.get('name')
 
-    # Replace 'your_collection' with the name of your Firestore collection
-    # This query filters documents where 'column_name' equals a specific value
     data = db.collection('predictions').where('user', '==', column_name).get()
     
     data_dict = {doc.id: doc.to_dict() for doc in data}
@@ -71,8 +69,7 @@ def retriverecords():
 @modelapi.route('/toapprove',methods=['GET'])
 def retriveforverifyrecords():
    
-    # Replace 'your_collection' with the name of your Firestore collection
-    # This query filters documents where 'column_name' equals a specific value
+
     data = db.collection('predictions').where('DoctorVeri', '==', 'To Be Confirm').get()
     
     data_dict = {doc.id: doc.to_dict() for doc in data}
@@ -81,37 +78,27 @@ def retriveforverifyrecords():
     
 @modelapi.route('/approvedlist',methods=['GET'])
 def verifiedrecords():
-   
-    # Replace 'your_collection' with the name of your Firestore collection
-    # This query filters documents where 'column_name' equals a specific value
+
     data = db.collection('predictions').where('DoctorVeri', '!=', 'To Be Confirm').get()
     
     data_dict = {doc.id: doc.to_dict() for doc in data}
     return jsonify(data_dict)
 
-@modelapi.route('/update_doctorveri', methods=['POST'])
-def update_doctor_veri():
+@modelapi.route('/update_doctorveri/<doc_id>', methods=['POST'])
+def update_doctor_veri(doc_id):
     data = request.json  # Get user input as JSON
     print("Received Data:", data)
 
-    if 'user' in data and 'Date' in data and 'DoctorVeri' in data:
-        user = data['user']
-        date = data['Date']
+    if 'DoctorVeri' in data:
         doctor_veri = data['DoctorVeri']
 
-        # Query Firestore for the specific user and date
-        query = db.collection('predictions').where('user', '==', user).where('Date', '==', date)
-        docs = query.stream()
-
-        for doc in docs:
-            doc_ref = db.collection('predictions').document(doc.id)
-            doc_ref.update({'DoctorVeri': doctor_veri})
-            #print("Received Data:", doc_ref)
+        # Update the specified document using the doc_id parameter
+        doc_ref = db.collection('predictions').document(doc_id)
+        doc_ref.update({'DoctorVeri': doctor_veri})
 
         return jsonify({"message": "DoctorVeri updated successfully"})
     else:
         return jsonify({"error": "Invalid input data"}), 400
-    
     
 @modelapi.route('/get_data/<string:id>', methods=['GET'])   
 def get_data(id):
@@ -128,53 +115,7 @@ def get_data(id):
             return "Data not found", 404
     except Exception as e:
         return str(e), 500
-  
 
-# @modelapi.route("/upload", methods=["POST"])
-# def get_submitOutput():
-#     if request.method=="POST":
-#         img=request.files['my_image']
-        
-#         img_path = "C:/Users/TempO/OneDrive/Desktop/flask_api/api_fl/static" + img.filename
-#         img.save(img_path)
-        
-#         p=predict_image(img_path, model, transform)
-        
-#     return jsonify({
-#         'prediction' : p      
-# })
-    
-# @modelapi.route("/uploadoriginal", methods=["POST"])
-# def get_submitOutput():
-#     if request.method=="POST":
-#         img=request.files['my_image']
-        
-#         img_path = "C:/Users/TempO/OneDrive/Desktop/flask_api/api_fl/static" + img.filename
-#         img.save(img_path)
-        
-#         original_image = cv2.imread(img_path)
-        
-#         gray_image = cv2.cvtColor(original_image, cv2.COLOR_BGR2GRAY)
-        
-#         _, binary_image = cv2.threshold(gray_image, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
-        
-#         edges = cv2.Canny(binary_image, 30, 70)
-        
-#         roi_x = 40  # X-coordinate of the top-left corner of ROI
-#         roi_y = 70  # Y-coordinate of the top-left corner of ROI
-#         roi_width = 250  # Width of ROI
-#         roi_height = 90 # Height of ROI
-#         roi = binary_image[roi_y:roi_y + roi_height, roi_x:roi_x + roi_width]
-        
-#         pathof="C:/Users/TempO/OneDrive/Desktop/flask_api/api_fl/static/roi1.png"
-#         cv2.imwrite(pathof, roi)
-        
-        
-#         p=predict_image(pathof, model, transform)
-        
-#     return jsonify({
-#         'prediction' : p      
-# })
     
 @modelapi.route("/uploadoriginalcompatible", methods=["POST"])
 def get_submitOutput():
@@ -257,25 +198,6 @@ def get_submitOutput():
     return jsonify({
         'prediction' : p      
 })
- 
-@modelapi.route("imagesave", methods=["GET"])   
-def upload_image():
-    # Read the image file using OpenCV
-    image = cv2.imread("C:/Users/TempO/OneDrive/Desktop/python_firebase/segment_51-139.png")
-
-    if image is not None:
-        # Convert the image to bytes
-        _, image_bytes = cv2.imencode('.jpg', image)
-
-        # Set the appropriate content type in the response headers
-        response = Response(image_bytes.tobytes(), content_type='image/jpeg')
-
-        # Optionally, you can set other response headers, such as 'Content-Disposition' to suggest a filename
-        # response.headers['Content-Disposition'] = 'attachment; filename=image.jpg'
-
-        return response
-    else:
-        return 'Failed to read the image file'
 
     
     
